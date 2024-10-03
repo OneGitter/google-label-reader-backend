@@ -2,17 +2,9 @@ import os
 import mimetypes
 from flask import Blueprint, request, jsonify
 import google.generativeai as genai
-import dotenv 
-
 
 # Configure Google Generative AI
-# Load environment variables from .env file
-dotenv.load_dotenv()
-
-# Configure Google Generative AI
-api_key = os.getenv("")
-genai.configure(api_key=api_key)
-
+genai.configure(api_key='AIzaSyDqoVUN7NyQ6M-UDrrfJpfKsnFldHyTrkw')
 
 # Define your image controller blueprint
 image_bp = Blueprint('image', __name__)
