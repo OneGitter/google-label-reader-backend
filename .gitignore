@@ -1,3 +1,4 @@
 myenv
 .env
 dotenv
+./application/__pycache__
