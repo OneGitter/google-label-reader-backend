@@ -1,4 +1,6 @@
 myenv
 .env
-dotenv
+__pycache__
+static
 ./application/__pycache__
+
