@@ -1,4 +1,4 @@
-<!DOCTYPE html>
+<!-- <!DOCTYPE html>
 <html lang="en">
 <head>
     <meta charset="UTF-8">
@@ -44,4 +44,114 @@
         <pre id="response"></pre>
     </div>
 </body>
+</html> -->
+
+<!-- TEST -->
+ 
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>LabelController</title>
+    <link rel="stylesheet" href="{{ url_for('static', filename='styles.css') }}">
+    <style>
+        .container {
+            display: flex;
+            justify-content: space-between;
+            margin: 20px;
+        }
+        .form-section {
+            flex: 1; /* Each form section takes equal width */
+            margin: 10px; /* Space between sections */
+            padding: 20px;
+            border: 1px solid #ccc; /* Optional: Add a border around each section */
+            border-radius: 8px; /* Optional: Rounded corners */
+        }
+        h2 {
+            text-align: center;
+        }
+        textarea, input[type="file"] {
+            width: 100%; /* Make text area and file input full width */
+        }
+        button {
+            display: block;
+            margin: 0 auto; /* Center the button */
+        }
+    </style>
+    <script>
+        async function submitForm(event) {
+            event.preventDefault();
+            const textInput = document.getElementById('inputText').value;
+            const imageInput = document.getElementById('image').files[0];
+            const formData = new FormData();
+
+            // Show loading message
+            document.getElementById('response').innerText = 'Loading...';
+
+            if (textInput) {
+                // Handle text input
+                formData.append('inputText', textInput);
+                try {
+                    const response = await fetch('/api/generate', {
+                        method: 'POST',
+                        headers: { 'Content-Type': 'application/json' },
+                        body: JSON.stringify({ contents: textInput })
+                    });
+
+                    const data = await response.json();
+                    document.getElementById('response').innerText = JSON.stringify(data, null, 2); // Display as formatted JSON
+                } catch (error) {
+                    document.getElementById('response').innerText = 'Error: ' + error.message;
+                }
+            } else if (imageInput) {
+                // Handle image upload
+                formData.append('image', imageInput);
+                try {
+                    const response = await fetch('/upload', {
+                        method: 'POST',
+                        body: formData
+                    });
+
+                    if (response.ok) {
+                        const imageResponse = await response.json();
+                        document.getElementById('response').innerText = JSON.stringify(imageResponse, null, 2); // Display as formatted JSON
+                    } else {
+                        document.getElementById('response').innerText = 'Error uploading image';
+                    }
+                } catch (error) {
+                    document.getElementById('response').innerText = 'Error: ' + error.message;
+                }
+            } else {
+                document.getElementById('response').innerText = 'Please enter text or upload an image.';
+            }
+        }
+    </script>
+</head>
+
+<body>
+    <div class="container">
+        <div class="form-section">
+            <h2>Text Generation</h2>
+            <form id="textForm" onsubmit="submitForm(event)">
+                <label for="inputText">Enter your text:</label>
+                <textarea id="inputText" name="inputText" rows="4" required></textarea>
+                <br><br>
+            </form>
+        </div>
+        <div class="form-section">
+            <h2>Image Upload</h2>
+            <form id="imageForm" onsubmit="submitForm(event)">
+                <label for="image">Upload an image:</label>
+                <input type="file" id="image" name="image" accept="image/*">
+                <br><br>
+            </form>
+        </div>
+    </div>
+    <button type="submit" onclick="submitForm(event)">Submit</button>
+    <h2>Response:</h2>
+    <pre id="response"></pre>
+</body>
+
 </html>

@@ -4,14 +4,10 @@ from flask import Blueprint, request, jsonify
 import google.generativeai as genai
 from dotenv import load_dotenv
 
-
-# Configure Google Generative AI
-# Load environment variables from .env file
 load_dotenv()
 
 # Configure Google Generative AI
-genai.configure(api_key=os.getenv("GEMINI_API_KEY"))
-
+genai.configure(api_key=os.environ.get('GEMINI_API_KEY'))
 
 # Define your image controller blueprint
 image_bp = Blueprint('image', __name__)
