@@ -1,5 +1,5 @@
-myenv
 .env
 __pycache__
-static
-./application/__pycache__
+application/__pycache__
+myenv
+static/uploads
