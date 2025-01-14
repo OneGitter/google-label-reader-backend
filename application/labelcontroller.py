@@ -1,15 +1,15 @@
 import google.generativeai as genai
-import dotenv
+from dotenv import load_dotenv
+
 import os
 
 
 # Configure Google Generative AI
 # Load environment variables from .env file
-dotenv.load_dotenv()
+load_dotenv()
 
 # Configure Google Generative AI
-api_key = os.getenv("api_key")
-genai.configure(api_key=api_key)
+genai.configure(api_key=os.getenv("GEMINI_API_KEY"))
 
 
 
